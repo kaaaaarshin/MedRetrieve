@@ -44,3 +44,28 @@ Features:
 - BioClinicalBERT embeddings
 - pgvector semantic ICD retrieval
 - FastAPI backend
+
+1. pacsdb url to local url (app/core/config.py) 
+2. ai_database url changed to local
+3. switched .npy and .pkl vector data into a local database
+4. added STOPWORD variable to icd_retriever 
+5. icd_retrieval in FastAPI is legacy
+
+------------------------------------------------------------------------
+
+• RadGraph        = Best for radiology, but setup/training is heavier
+• BioClinicalBERT = Good embeddings, mediocre out-of-the-box NER (CU)
+• MedNER          = Varies depending on implementation
+• scispaCy        = Fast, stable, production-friendly (Future Change)
+
+------------------------------------------------------------------------
+
+• Local Database name: ray_ai_local
+
+•server to run the retrieval augmentation
+
+activation 
+cd ai-service
+source .ai/bin/activate
+
+python -m uvicorn app.main:app --reload
