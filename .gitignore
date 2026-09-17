@@ -1,0 +1,19 @@
+# secrets
+.env
+*.env
+ai-service/.env
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+ai-service/.ai/
+*.egg-info/
+
+# macOS
+.DS_Store
+
+# logs / local
+*.log
+nohup.out

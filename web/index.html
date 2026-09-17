@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MedRetrieve — Transcript to ICD-10</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <div>
+          <h1>MedRetrieve</h1>
+          <p class="subtitle">Transcript &rarr; ICD-10</p>
+        </div>
+      </div>
+      <div class="status" id="backendStatus" role="status" aria-live="polite">
+        <span class="dot dot-unknown" id="statusDot" aria-hidden="true"></span>
+        <span id="statusText">Checking backend…</span>
+        <span class="latency" id="latencyText" hidden></span>
+      </div>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="card" aria-labelledby="inputHeading">
+      <div class="row-between">
+        <h2 id="inputHeading">Transcript</h2>
+        <label class="auto-toggle" title="Analyze automatically as you type">
+          <input type="checkbox" id="autoAnalyze" checked />
+          <span>Auto-analyze</span>
+        </label>
+      </div>
+      <p class="hint">Paste or type the dictated / written note. Analysis runs as you type.</p>
+
+      <label class="sr-only" for="transcript">Clinical transcript</label>
+      <textarea
+        id="transcript"
+        rows="9"
+        placeholder="e.g. Chest X-ray shows cardiomegaly with bilateral pleural effusion and pulmonary edema…"
+        maxlength="8000"
+      ></textarea>
+
+      <div class="row-between">
+        <span class="char-count" id="charCount">0 words · 0 / 8000</span>
+        <span class="live-state" id="liveState" role="status" aria-live="polite"></span>
+      </div>
+
+      <div class="transcript-preview" id="transcriptPreview" hidden>
+        <div class="preview-label">Detected terms</div>
+        <div class="chips" id="entityChips"></div>
+      </div>
+
+      <div class="row-between samples-row">
+        <div class="samples">
+          <button type="button" class="btn btn-ghost" data-sample="pleural">Sample: effusion</button>
+          <button type="button" class="btn btn-ghost" data-sample="cardiac">Sample: cardiac</button>
+          <button type="button" class="btn btn-ghost" data-sample="neuro">Sample: neuro</button>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn btn-primary" id="analyzeBtn">Analyze</button>
+        <button type="button" class="btn" id="clearBtn">Clear</button>
+      </div>
+
+      <div class="error" id="errorBanner" hidden></div>
+
+      <details class="history" id="historyWrap" hidden>
+        <summary>Recent analyses (<span id="historyCount">0</span>)</summary>
+        <ul class="history-list" id="historyList"></ul>
+        <button type="button" class="btn btn-small btn-ghost" id="clearHistoryBtn">Clear history</button>
+      </details>
+
+      <p class="meta">Endpoint: <code id="endpointLabel"></code></p>
+    </section>
+
+    <section class="card" aria-labelledby="resultsHeading">
+      <div class="row-between">
+        <h2 id="resultsHeading">ICD-10 codes</h2>
+        <span class="count-badge" id="resultCount" hidden></span>
+      </div>
+
+      <div class="filterbar" id="filterbar" hidden>
+        <input type="search" id="resultSearch" placeholder="Filter codes or descriptions…" aria-label="Filter results" />
+        <select id="entityFilter" aria-label="Filter by term">
+          <option value="">All terms</option>
+        </select>
+        <select id="sortSelect" aria-label="Sort results">
+          <option value="score">Top score</option>
+          <option value="code">Code A–Z</option>
+        </select>
+      </div>
+
+      <div class="toolbar" id="toolbar" hidden>
+        <button type="button" class="btn btn-small" id="copyCodesBtn">Copy codes</button>
+        <button type="button" class="btn btn-small" id="copyJsonBtn">Copy JSON</button>
+        <button type="button" class="btn btn-small" id="exportBtn">Export .json</button>
+      </div>
+
+      <div id="results" aria-live="polite">
+        <div class="empty" id="emptyState">
+          <p>No analysis yet.</p>
+          <p class="hint">Start typing — results appear automatically. Only matches with score &ge; 0.85 are returned by the backend.</p>
+        </div>
+      </div>
+
+      <p class="disclaimer">Research aid — verify every code clinically before use.</p>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <footer class="footer">
+    <span>MedRetrieve &middot; vanilla JS frontend &middot; backend: <code id="apiBaseLabel"></code> &middot; <span class="kbd">⌘/Ctrl+Enter</span> to analyze</span>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
